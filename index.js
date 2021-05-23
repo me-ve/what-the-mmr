@@ -4,7 +4,7 @@ const bot = new Discord.Client();
 bot.commands = new Discord.Collection();
 bot.cooldowns = new Discord.Collection();
 const botCommands = require('./commands');
-let summoners = new Map();
+global.summoners = new Map();
 
 const { cooldowns } = bot;
 

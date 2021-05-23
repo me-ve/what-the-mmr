@@ -1,7 +1,54 @@
+const URLEncode = require('urlencode');
+const HTTPS = require('https');
 module.exports = {
     name: '!mmr',
-    description: 'Get mmr',
+    description: 'Get MMR data',
     execute(msg, args) {
-        msg.channel.send('This function is not implemented yet.');
+        const user = msg.author.id;
+        const userName = msg.author.username;
+        const usage = 'Usage: !mmr';
+        if (args != 0) {
+            return msg.send(usage);
+        }
+        const summonerName = global.summoners[user].summonerName;
+        const server = global.summoners[user].server;
+        let encodedName = URLEncode(summonerName);
+        const query = `https://${server}.whatismymmr.com/api/v1/summoner?name=${encodedName}`;
+        try {
+            msg.channel.send(`Please wait...`);
+            HTTPS.get(query, res => {
+                console.log('Status Code:', res.statusCode);
+                if (res.statusCode < 200 || res.statusCode > 299)
+                    return msg.channel.send(`User ${summonerName} not found.`);
+                else {
+                    let body;
+                    console.log(query);
+                    res.on('data', function(chunk) {
+                        body += chunk;
+                    });
+                    res.on('end', function() {
+                        try {
+                            if (body.startsWith('undefined')) {
+                                body = body.substring('undefined'.length);
+                            }
+                            let data = JSON.parse(body);
+                            console.log(data);
+                            let ranked = data["ranked"];
+                            let normal = data["normal"];
+                            let ARAM = data["ARAM"];
+                            let message = `${summonerName}\n`;
+                            message += `**Ranked\t${ranked["avg"]}\t(±${ranked["err"]})**\n`;
+                            message += `Normal\t${normal["avg"]}\t(±${normal["err"]})\n`;
+                            message += `ARAM\t${ARAM["avg"]}\t(±${ARAM["err"]})\n`;
+                            msg.channel.send(message);
+                        } catch (error) {
+                            return console.log(error);
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            return console.info(error);
+        }
     },
 };

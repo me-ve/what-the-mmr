@@ -3,7 +3,6 @@ const HTTPS = require('https');
 
 module.exports = {
     name: '!set_name',
-    cooldown: 5,
     description: 'Set the summoner name',
     execute(msg, args) {
         const user = msg.author.id;
@@ -37,14 +36,15 @@ module.exports = {
         try {
             msg.channel.send(`Please wait...`);
             HTTPS.get(query, res => {
-                let data = [];
-                const headerDate = res.headers && res.headers.date ? res.headers.date : 'no response date';
+                console.log(query);
                 console.log('Status Code:', res.statusCode);
                 if (res.statusCode < 200 || res.statusCode > 299)
                     return msg.channel.send(`User ${summonerName} not found.`);
+                // 001 - user doesn't exist
+                // 004 - user data was not found
                 else {
                     msg.channel.send(`Setting ${summonerName} to user ${userName}.`);
-                    summoners[user] = summonerName;
+                    global.summoners[user] = { summonerName: summonerName, server: server };
                 }
             });
         } catch (error) {
