@@ -6,12 +6,33 @@ module.exports = {
     execute(msg, args) {
         const user = msg.author.id;
         const userName = msg.author.username;
-        const usage = 'Usage: !mmr';
-        if (args != 0) {
-            return msg.send(usage);
+        let summonerName;
+        let server;
+        const usage = 'Usage: !mmr or !mmr <server> <name>';
+        if (args == 0) {
+            summonerName = global.summoners[user].summonerName;
+            server = global.summoners[user].server;
+        } else if (args.length < 2) {
+            return msg.channel.send(usage);
+        } else {
+            switch (args[0]) {
+                case 'NA':
+                    server = 'na';
+                    break;
+                case 'EUNE':
+                    server = 'eune';
+                    break;
+                case 'EUW':
+                    server = 'euw';
+                    break;
+                default:
+                    return msg.channel.send('Expected servers: NA, EUNE, EUW');
+            }
+            summonerName = `${args[1]}`;
+            for (let i = 2; i < args.length; i++) {
+                summonerName += ` ${args[i]}`;
+            }
         }
-        const summonerName = global.summoners[user].summonerName;
-        const server = global.summoners[user].server;
         let encodedName = URLEncode(summonerName);
         const query = `https://${server}.whatismymmr.com/api/v1/summoner?name=${encodedName}`;
         try {
