@@ -70,7 +70,7 @@ module.exports = {
                                 .setTimestamp();
                             msg.channel.send(embed);*/
                             let message = `${summonerName}\n`;
-                            message += `**Type\tLast refresh time\tAvg\tError\tCentile\tClosest rank**\n`;
+                            message += `>>> **Type\tLast refresh time\tAverage\tError\tCentile\tClosest rank**\n`;
                             if (ranked["avg"] != null) {
                                 let time = new Date(ranked["timestamp"] * 1000).toISOString().slice(0, 16).replace('T', ' ');
                                 message += `Ranked\t${time}\t${ranked["avg"]}\t(±${ranked["err"]})\t${ranked["percentile"]}%\t${ranked["closestRank"]}\n`;
