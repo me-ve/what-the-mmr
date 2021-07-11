@@ -22,7 +22,7 @@ bot.on('ready', () => {
 bot.on('message', msg => {
     const args = msg.content.split(/ +/);
     const command = args.shift().toLowerCase();
-    console.info(`Called command: ${command}`);
+    //console.info(`Called command: ${command}`);
 
     if (!cooldowns.has(command.name)) {
         cooldowns.set(command.name, new Discord.Collection());

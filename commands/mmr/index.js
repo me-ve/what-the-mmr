@@ -41,7 +41,7 @@ module.exports = {
         let encodedName = URLEncode(summonerName);
         const query = `https://${server}.whatismymmr.com/api/v1/summoner?name=${encodedName}`;
         try {
-            msg.channel.send(`Please wait...`);
+            //msg.channel.send(`Please wait...`);
             HTTPS.get(query, res => {
                 console.log('Status Code:', res.statusCode);
                 if (res.statusCode < 200 || res.statusCode > 299)
