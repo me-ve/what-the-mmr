@@ -1,5 +1,6 @@
 const URLEncode = require('urlencode');
 const HTTPS = require('https');
+const Discord = require('discord.js');
 module.exports = {
     name: '!mmr',
     description: 'Get MMR data',
@@ -25,8 +26,11 @@ module.exports = {
                 case 'EUW':
                     server = 'euw';
                     break;
+                case 'KR':
+                    server = 'kr';
+                    break;
                 default:
-                    return msg.channel.send('Expected servers: NA, EUNE, EUW');
+                    return msg.channel.send('Expected servers: NA, EUNE, EUW, KR');
             }
             summonerName = `${args[1]}`;
             for (let i = 2; i < args.length; i++) {
@@ -57,6 +61,13 @@ module.exports = {
                             let ranked = data["ranked"];
                             let normal = data["normal"];
                             let ARAM = data["ARAM"];
+                            /*let embed = new Discord.MessageEmbed()
+                                .setColor('#0099ff')
+                                .setTitle(`${summonerName}`)
+                                .setAuthor(`${userName}`)
+                                .addFields({ name: 'Ranked average', value: `${ranked["avg"]}`, inline: true }, { name: 'Ranked ±', value: `${ranked["err"]}`, inline: true }, { name: 'Normal average', value: `${normal["avg"]}`, inline: true }, { name: 'Normal ±', value: `${normal["err"]}`, inline: true }, { name: 'ARAM average', value: `${ARAM["avg"]}`, inline: true }, { name: 'ARAM ±', value: `${ARAM["err"]}`, inline: true })
+                                .setTimestamp();
+                            msg.channel.send(embed);*/
                             let message = `${summonerName}\n`;
                             message += `**Ranked\t${ranked["avg"]}\t(±${ranked["err"]})**\n`;
                             message += `Normal\t${normal["avg"]}\t(±${normal["err"]})\n`;
