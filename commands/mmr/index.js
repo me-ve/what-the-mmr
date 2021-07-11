@@ -17,18 +17,21 @@ module.exports = {
         if (args.length < 2) {
             return msg.channel.send(usage);
         } else {
+            let arg0 = args[0].toLowerCase();
             switch (args[0]) {
-                case 'NA':
-                    server = 'na';
-                    break;
-                case 'EUNE':
-                    server = 'eune';
-                    break;
-                case 'EUW':
-                    server = 'euw';
-                    break;
-                case 'KR':
-                    server = 'kr';
+                case 'na':
+                    //server = 'na';
+                    //break;
+                case 'eune':
+                    //server = 'eune';
+                    //break;
+                case 'euw':
+                    //server = 'euw';
+                    //break;
+                case 'kr':
+                    //server = 'kr';
+                    //break;
+                    server = arg0;
                     break;
                 default:
                     return msg.channel.send('Expected servers: NA, EUNE, EUW, KR');
