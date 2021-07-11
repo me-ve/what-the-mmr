@@ -10,10 +10,11 @@ module.exports = {
         let summonerName;
         let server;
         const usage = 'Usage: !mmr or !mmr <server> <name>';
-        if (args == 0) {
+        /*if (args == 0) {
             summonerName = global.summoners[user].summonerName;
             server = global.summoners[user].server;
-        } else if (args.length < 2) {
+        } else*/
+        if (args.length < 2) {
             return msg.channel.send(usage);
         } else {
             switch (args[0]) {
@@ -69,9 +70,26 @@ module.exports = {
                                 .setTimestamp();
                             msg.channel.send(embed);*/
                             let message = `${summonerName}\n`;
-                            message += `**Ranked\t${ranked["avg"]}\t(±${ranked["err"]})**\n`;
-                            message += `Normal\t${normal["avg"]}\t(±${normal["err"]})\n`;
-                            message += `ARAM\t${ARAM["avg"]}\t(±${ARAM["err"]})\n`;
+                            message += `**Type\tLast refresh time\tAvg\tError\tCentile\tClosest rank**\n`;
+                            if (ranked["avg"] != null) {
+                                let time = new Date(ranked["timestamp"] * 1000).toISOString().slice(0, 16).replace('T', ' ');
+                                message += `Ranked\t${time}\t${ranked["avg"]}\t(±${ranked["err"]})\t${ranked["percentile"]}%\t${ranked["closestRank"]}\n`;
+
+                            } else {
+                                message += `*no data for ranked*\n`;
+                            }
+                            if (normal["avg"] != null) {
+                                let time = new Date(normal["timestamp"] * 1000).toISOString().slice(0, 16).replace('T', ' ');
+                                message += `Normal\t${time}\t${normal["avg"]}\t(±${normal["err"]})\t${normal["percentile"]}%\t${normal["closestRank"]}\n`;
+                            } else {
+                                message += `*no data for normal*\n`;
+                            }
+                            if (ARAM["avg"] != null) {
+                                let time = new Date(ARAM["timestamp"] * 1000).toISOString().slice(0, 16).replace('T', ' ');
+                                message += `ARAM\t${time}\t${ARAM["avg"]}\t(±${ARAM["err"]})\t${ARAM["percentile"]}%\t${ARAM["closestRank"]}\n`;
+                            } else {
+                                message += `*no data for ARAM*\n`;
+                            }
                             msg.channel.send(message);
                         } catch (error) {
                             return console.log(error);
