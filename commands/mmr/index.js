@@ -18,7 +18,7 @@ module.exports = {
             return msg.channel.send(usage);
         } else {
             let arg0 = args[0].toLowerCase();
-            switch (args[0]) {
+            switch (arg0) {
                 case 'na':
                     //server = 'na';
                     //break;
